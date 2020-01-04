@@ -8,19 +8,17 @@ const Thing = () => {
   // const [isIncreasing, setIsIncreasing] = useState(true);
   const props = useSpring({
     scale: active ? [2, 2, 2] : [1, 1, 1],
-    color: active ? "hotpink" : "gray"
+    color: active ? "blue" : "hotpink"
   });
   const ref = useRef(null);
   useFrame(() => {
-    ref.current.rotation.x = ref.current.rotation.y += 0.01;
+    ref.current.rotation.y += 0.01;
     // console.log(ref.current.scale.x);
     // ref.current.scale.x = ref.current.scale.x += isIncreasing ? 0.01 : -0.01;
-
     // if (ref.current.scale.x < 1) {
     //   setIsIncreasing(true);
     //   ref.current.scale.x = 1;
     // }
-
     // if (ref.current.scale.x > 5) {
     //   setIsIncreasing(false);
     //   ref.current.scale.x = 5;
@@ -28,10 +26,29 @@ const Thing = () => {
   });
 
   return (
-    <a.mesh ref={ref} onClick={() => setActive(!active)} scale={props.scale}>
+    <a.mesh
+      position={[0, 0, 0]}
+      ref={ref}
+      onClick={() => setActive(!active)}
+      scale={props.scale}
+    >
       <boxBufferGeometry attach="geometry" args={[1, 1, 1]} />
-      <meshNormalMaterial attach="material" color={props.color} />
+      <a.meshPhysicalMaterial attach="material" color={props.color} />
     </a.mesh>
+  );
+};
+
+const Floor = () => {
+  const ref = useRef(null);
+  useFrame(() => {
+    // ref.current.rotation.x = ref.current.rotation.y += 0.01;
+  });
+
+  return (
+    <mesh ref={ref} position={[0, 0, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+      <planeBufferGeometry />} attach="gemmetry" args={[100, 100]} />
+      <meshPhysicalMaterial attach="material" color="red" />
+    </mesh>
   );
 };
 
@@ -39,6 +56,9 @@ const App = () => (
   <>
     <h1 className="grad">Happy 2020</h1>
     <Canvas>
+      <ambientLight />
+      <spotLight position={[0, 5, 10]} penumbra={1} />
+      <Floor />
       <Thing />
     </Canvas>
   </>
