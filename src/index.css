@@ -34,6 +34,7 @@ background-color: transparent;
   background-clip: text;
   color: transparent;
   animation: anigrad 2s ease-in-out alternate infinite;
+  z-index: 2;
 }
 
 @keyframes anigrad {

@@ -1,6 +1,9 @@
-import { Canvas, useFrame } from "react-three-fiber";
+import { extend, Canvas, useFrame } from "react-three-fiber";
 import React, { useRef, useState } from "react";
 import { useSpring, a } from "react-spring/three";
+import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer";
+import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass";
+extend({ EffectComposer, RenderPass });
 
 const Thing = () => {
   // const [hovered, setHovered] = useState(false);
@@ -27,12 +30,12 @@ const Thing = () => {
 
   return (
     <a.mesh
-      position={[0, 0, 0]}
+      position={[0, 0, -5]}
       ref={ref}
       onClick={() => setActive(!active)}
       scale={props.scale}
     >
-      <boxBufferGeometry attach="geometry" args={[1, 1, 1]} />
+      <sphereBufferGeometry attach="geometry" args={[1, 16, 16]} />
       <a.meshPhysicalMaterial attach="material" color={props.color} />
     </a.mesh>
   );
@@ -60,6 +63,9 @@ const App = () => (
       <spotLight position={[0, 5, 10]} penumbra={1} />
       <Floor />
       <Thing />
+      <effectComposer>
+        <renderPass attachArray="passes" scene={scene} camera={camera} />
+      </effectComposer>
     </Canvas>
   </>
 );
